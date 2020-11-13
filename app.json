@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Tournament App",
+    "slug": "tournament-app",
+    "ios": {
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Present derby participants location on digital signage map during event",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Present derby participants location on digital signage map during event",
+        "NSLocationAlwaysUsageDescription": "Present derby participants location on digital signage map during event",
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
+      }
+    },
+    "android": {
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
+    }
+  }
+}
