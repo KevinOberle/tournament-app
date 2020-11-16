@@ -18,7 +18,7 @@ export const FeedScreen = ({ navigation }) => {
   const QueryLimit = 12; //Will need to calculate based on layout columns and card height
   const CollectionRef = db.collection("posts");
 
-  useEffect(() => {
+  const GetPosts = () => {
     CollectionRef.limit(QueryLimit)
       .orderBy("time")
       .get()
@@ -28,6 +28,10 @@ export const FeedScreen = ({ navigation }) => {
         refreshFlatlist();
       })
       .catch((error) => console.log("Error getting documents: ", error));
+  };
+
+  useEffect(() => {
+    GetPosts();
   }, []);
 
   const refreshFlatlist = () => setRefreshTrigger(!refreshTrigger);
@@ -40,15 +44,13 @@ export const FeedScreen = ({ navigation }) => {
         <Layout style={{ flex: 1 }}>
           {posts.length == 0 ? null : (
             <FlatList
-              style={{ flex: 1, borderWidth: 0 }}
               keyExtractor={(item) => item.id}
               refreshing={refreshing}
               onRefresh={<Spinner />}
-              data={[{ id: "bob" }]}
+              data={posts}
+              onRefresh={GetPosts}
               extraData={refreshTrigger}
-              itemRender={() => {
-                return <Text>Hello</Text>;
-              }}
+              renderItem={({ item }) => <FeedCard doc={item} />}
             />
           )}
         </Layout>
