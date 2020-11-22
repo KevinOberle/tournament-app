@@ -1,11 +1,12 @@
 import { Card, useTheme, Icon } from "@ui-kitten/components";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Image, View, Text } from "react-native";
-import { timeAgo, timeago } from "../../utilities/timeAgo";
+import { useTimeSince } from "../hooks/timeSince";
 
 export const FeedCard = (props) => {
   const theme = useTheme();
   const PostData = props.doc.data();
+  const TimeSince = useTimeSince(PostData.time.toDate());
 
   return (
     <Card
@@ -32,7 +33,7 @@ export const FeedCard = (props) => {
                 {/*<Avatar source={PostData.author.photo} />*/}
                 <View style={styles.cardAuthorText}>
                   <Text category="s1">{PostData.authorName}</Text>
-                  <Text category="s2">{timeAgo(PostData.time.toDate())}</Text>
+                  <Text category="s2">{TimeSince}</Text>
                 </View>
               </View>
               <View style={styles.postActionButtonContainer}>

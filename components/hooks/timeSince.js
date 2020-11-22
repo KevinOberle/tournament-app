@@ -1,27 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import moment from "moment";
 
-export const TimeSince = (timestamp) => {
-  const calcTimeSince = (timestamp) => {
-    //Returns {timeSince String, Next Timeout}
+moment.locale();
 
-    const now = typeof dateParam === "object" ? dateParam : new Date(dateParam);
+export const useTimeSince = (timestamp) => {
+  const [TimeSinceText, setTimeSinceText] = useState("");
+  const [NextTick, setNextTick] = useState(0);
+  const NextTickRef = useRef(NextTick);
 
-    const dateDiff = timestamp - now;
+  const mod = (n, m) => {
+    return ((n % m) + m) % m;
+  };
 
-    if (dateDiff < 10 * 1000) {
-      return ["Seconds ago", 10 * 1000 - datediff];
-    } else if (dateDiff < 55 * 1000) {
-      return [
-        round(dateDiff / 1000, 1) + " seconds ago",
-        datediff % (10 * 1000),
-      ];
-    } else if (dateDiff < 55 * 60 * 1000) {
-      return [
-        round(dateDiff / (60 * 1000), 1) + " minutes ago",
-        datediff % (60 * 1000),
-      ];
+  var timer;
+
+  useEffect(() => {
+    var timer = {};
+    if (NextTick >= 0) {
+      timer = setTimeout(() => {
+        setNextTick(NextTickTime(timestamp));
+        setTimeSinceText(moment(timestamp).fromNow());
+      }, NextTick);
+    }
+  }, [NextTick]);
+
+  useEffect(() => {
+    return timer && clearTimeout(timer);
+  }, []);
+
+  const NextTickTime = (timestamp) => {
+    const dateDiff = Date.now() - timestamp;
+
+    if (dateDiff < 60 * 60 * 1000) {
+      return mod(-dateDiff, 60 * 1000);
     } else {
-      return [0, -1];
+      return mod(-dateDiff, 60 * 60 * 1000);
     }
   };
+
+  return TimeSinceText;
 };
